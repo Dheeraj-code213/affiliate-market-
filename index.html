@@ -10,9 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
-  <!-- Google Identity Services for Sign-In -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
-  
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1454423689079498" crossorigin="anonymous"></script>
   
@@ -108,27 +105,6 @@
       transform: translateY(-2px);
       box-shadow: 0 10px 20px -5px rgba(243,156,18,0.3);
     }
-    .google-btn-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin: 15px 0;
-    }
-    .divider {
-      display: flex;
-      align-items: center;
-      margin: 20px 0;
-      color: #94a3b8;
-    }
-    .divider::before, .divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: #e2e8f0;
-    }
-    .divider span {
-      padding: 0 15px;
-    }
     .switch-auth {
       margin-top: 20px;
       color: #475569;
@@ -145,10 +121,9 @@
       display: none;
     }
 
-    /* Header Styles - Sticky Working */
+    /* Header Styles */
     .header {
       background: #ffffff;
-      backdrop-filter: blur(0px);
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -211,33 +186,6 @@
       background: #e67e22;
       transform: scale(1.02);
     }
-    .search-bar {
-      display: flex;
-      flex: 1;
-      max-width: 480px;
-    }
-    .search-bar input {
-      flex: 1;
-      padding: 12px 18px;
-      border: 1px solid #e2e8f0;
-      border-radius: 60px 0 0 60px;
-      font-size: 0.95rem;
-      outline: none;
-      background: #f8fafc;
-    }
-    .search-bar input:focus {
-      border-color: #f39c12;
-    }
-    .search-bar button {
-      background: #f39c12;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 0 60px 60px 0;
-      cursor: pointer;
-      color: #1e2a3a;
-      font-weight: 700;
-      transition: 0.2s;
-    }
     .user-info {
       display: flex;
       align-items: center;
@@ -273,7 +221,7 @@
       background: #e2e8f0;
     }
 
-    /* Hero Section - Will Hide on Scroll */
+    /* Hero Section */
     .hero-section {
       background: linear-gradient(105deg, #ffffff 0%, #fef9e6 100%);
       padding: 70px 20px;
@@ -308,14 +256,12 @@
       margin: 0;
     }
 
-    /* Container */
     .container {
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 24px;
     }
 
-    /* Ad Container */
     .ad-container {
       background: #fff;
       border-radius: 24px;
@@ -335,7 +281,6 @@
       margin-bottom: 8px;
     }
 
-    /* Categories */
     .section-title {
       font-size: 2rem;
       font-weight: 800;
@@ -381,7 +326,6 @@
       color: #1e293b;
     }
 
-    /* Product Grid */
     .products-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -486,7 +430,6 @@
       transform: scale(0.98);
     }
 
-    /* Modal */
     .modal {
       display: none;
       position: fixed;
@@ -620,10 +563,6 @@
       .nav-container {
         flex-direction: column;
       }
-      .search-bar {
-        max-width: 100%;
-        width: 100%;
-      }
       .hero-section h1 {
         font-size: 2rem;
       }
@@ -658,14 +597,6 @@
       <button id="emailSignupBtn" class="login-btn-primary">Create Account</button>
     </div>
     
-    <div class="divider">
-      <span>or</span>
-    </div>
-    
-    <div class="google-btn-wrapper">
-      <div id="googleSignInButton"></div>
-    </div>
-    
     <div class="switch-auth">
       <span id="authSwitchText">New user? </span>
       <a id="authSwitchBtn">Create Account</a>
@@ -683,10 +614,6 @@
         <a id="categoriesLink">Categories</a>
         <a id="uploadNavBtn" class="upload-btn">📤 Upload Product</a>
       </div>
-      <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search for products...">
-        <button id="searchBtn"><i class="fas fa-search"></i> Go</button>
-      </div>
       <div class="user-info">
         <div class="user-avatar" id="userAvatar"></div>
         <span id="userName"></span>
@@ -695,7 +622,6 @@
     </div>
   </header>
 
-  <!-- Hero Section - Will Hide on Scroll -->
   <div id="heroSection" class="hero-section">
     <div class="container">
       <h1>Welcome to Affiliate Market</h1>
@@ -704,7 +630,6 @@
   </div>
 
   <main class="container">
-    <!-- Google Ad -->
     <div class="ad-container">
       <div class="ad-label">Sponsored</div>
       <ins class="adsbygoogle"
@@ -723,7 +648,6 @@
     <h2 class="section-title" id="productsTitle">🔥 Trending Products</h2>
     <div id="productsGrid" class="products-grid"></div>
 
-    <!-- Second Google Ad -->
     <div class="ad-container">
       <div class="ad-label">Advertisement</div>
       <ins class="adsbygoogle"
@@ -808,11 +732,8 @@
   let products = [];
   let currentUser = null;
   let currentFilter = "all";
-  let searchQuery = "";
-  let isLoginMode = true;
   let heroSection = null;
 
-  // Helper Functions
   function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
   function escapeAttr(str) { if (!str) return ''; return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function saveProducts() { localStorage.setItem('affiliateMarketProducts', JSON.stringify(products)); }
@@ -822,17 +743,16 @@
     if (saved) { products = JSON.parse(saved); } 
     else {
       products = [
-        { id: 1, name: "Sony WH-1000XM5", category: "electronics", description: "Industry-leading noise cancellation, 30hr battery, premium sound.", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400", affiliateLink: "https://amzn.to/demo1" },
-        { id: 2, name: "Premium Cotton Tee", category: "fashion", description: "Breathable organic cotton, modern fit.", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", affiliateLink: "https://amzn.to/demo2" },
-        { id: 3, name: "Galaxy Watch Ultra", category: "electronics", description: "Advanced health metrics, GPS, 5-day battery.", image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400", affiliateLink: "https://amzn.to/demo3" },
-        { id: 4, name: "Floral Summer Dress", category: "fashion", description: "Flowy chiffon, perfect for beach days.", image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400", affiliateLink: "https://amzn.to/demo4" },
-        { id: 5, name: "Ergonomic Mesh Chair", category: "home", description: "Adjustable lumbar, breathable mesh, modern design.", image: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400", affiliateLink: "https://amzn.to/demo5" }
+        { id: 1, name: "Sony WH-1000XM5 Headphones", category: "electronics", description: "Industry-leading noise cancellation, 30hr battery, premium sound quality.", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400", affiliateLink: "https://amzn.to/demo1" },
+        { id: 2, name: "Premium Cotton T-Shirt", category: "fashion", description: "Breathable organic cotton, modern fit, available in multiple colors.", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", affiliateLink: "https://amzn.to/demo2" },
+        { id: 3, name: "Galaxy Watch Ultra Smartwatch", category: "electronics", description: "Advanced health metrics, GPS, 5-day battery, AMOLED display.", image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400", affiliateLink: "https://amzn.to/demo3" },
+        { id: 4, name: "Floral Summer Maxi Dress", category: "fashion", description: "Flowy chiffon fabric, floral print, perfect for beach days.", image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400", affiliateLink: "https://amzn.to/demo4" },
+        { id: 5, name: "Ergonomic Mesh Office Chair", category: "home", description: "Adjustable lumbar support, breathable mesh back, modern design.", image: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400", affiliateLink: "https://amzn.to/demo5" }
       ];
       saveProducts();
     }
   }
 
-  // Scroll Hero Effect
   function initScrollHero() {
     heroSection = document.getElementById('heroSection');
     window.addEventListener('scroll', () => {
@@ -841,40 +761,29 @@
     });
   }
 
-  // Google Sign-In
-  function initGoogleSignIn() {
-    if (typeof google !== 'undefined') {
-      google.accounts.id.initialize({
-        client_id: '1080626617131-5hv0r9s91n3frgp5gp9nffna0rs8h2d3.apps.googleusercontent.com',
-        callback: (resp) => {
-          const data = JSON.parse(atob(resp.credential.split('.')[1]));
-          currentUser = { email: data.email, name: data.name, picture: data.picture };
-          localStorage.setItem('affiliateMarketUser', JSON.stringify(currentUser));
-          showMainApp();
-        }
-      });
-      google.accounts.id.renderButton(document.getElementById('googleSignInButton'), { theme: 'outline', size: 'large', width: '100%' });
-    }
-  }
-
   function checkLoginStatus() {
     const savedUser = localStorage.getItem('affiliateMarketUser');
     if (savedUser) { currentUser = JSON.parse(savedUser); showMainApp(); } 
     else showLoginScreen();
   }
+  
   function showLoginScreen() { document.getElementById('loginScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none'; }
+  
   function showMainApp() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
     document.getElementById('userName').innerText = currentUser.name;
     document.getElementById('userAvatar').innerText = currentUser.name.charAt(0).toUpperCase();
-    renderCategories(); renderProducts(); setupMainEvents();
+    renderCategories(); 
+    renderProducts(); 
+    setupMainEvents();
     setTimeout(() => initScrollHero(), 100);
     setTimeout(() => { if (typeof adsbygoogle !== 'undefined') try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){} }, 800);
   }
 
   function setupAuthEvents() {
     const switchBtn = document.getElementById('authSwitchBtn');
+    let isLoginMode = true;
     switchBtn.onclick = () => {
       isLoginMode = !isLoginMode;
       document.getElementById('loginFormContainer').style.display = isLoginMode ? 'block' : 'none';
@@ -900,14 +809,19 @@
     document.getElementById('homeLink').onclick = () => resetHome();
     document.getElementById('footerHome').onclick = () => resetHome();
     document.getElementById('categoriesLink').onclick = () => document.getElementById('categoriesSection').scrollIntoView({ behavior: 'smooth' });
-    document.getElementById('searchBtn').onclick = () => { searchQuery = document.getElementById('searchInput').value.toLowerCase(); renderProducts(); };
-    document.getElementById('searchInput').onkeypress = (e) => { if (e.key === 'Enter') { searchQuery = e.target.value.toLowerCase(); renderProducts(); } };
     document.getElementById('uploadNavBtn').onclick = () => openUploadModal();
     document.getElementById('footerUpload').onclick = () => openUploadModal();
     document.getElementById('closeUploadModal').onclick = () => document.getElementById('uploadModal').style.display = 'none';
     document.getElementById('closeDetailModal').onclick = () => document.getElementById('productDetailModal').style.display = 'none';
   }
-  function resetHome() { currentFilter = 'all'; searchQuery = ''; document.getElementById('searchInput').value = ''; document.getElementById('productsTitle').innerHTML = '🔥 Trending Products'; document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active')); renderProducts(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  
+  function resetHome() { 
+    currentFilter = 'all'; 
+    document.getElementById('productsTitle').innerHTML = '🔥 Trending Products'; 
+    document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active')); 
+    renderProducts(); 
+    window.scrollTo({ top: 0, behavior: 'smooth' }); 
+  }
 
   function renderCategories() {
     const cats = [
@@ -927,7 +841,6 @@
         currentFilter = cat;
         const title = card.querySelector('h3').innerText;
         document.getElementById('productsTitle').innerHTML = currentFilter === 'all' ? '🔥 All Products' : `🔥 ${title}`;
-        searchQuery = ''; document.getElementById('searchInput').value = '';
         renderProducts();
         document.getElementById('productsTitle').scrollIntoView({ behavior: 'smooth' });
       });
@@ -935,10 +848,19 @@
   }
 
   function renderProducts() {
-    let filtered = products.filter(p => (currentFilter === 'all' || p.category === currentFilter) && (searchQuery ? p.name.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery) : true));
+    let filtered = products.filter(p => {
+      if (currentFilter !== "all" && p.category !== currentFilter) return false;
+      return true;
+    });
+    
     const container = document.getElementById('productsGrid');
-    if (!filtered.length) { container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:60px;">✨ No products found. Be the first to upload!</div>'; return; }
+    if (!filtered.length) { 
+      container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:60px;"><i class="fas fa-store" style="font-size: 48px; color: #cbd5e1; margin-bottom: 16px; display: block;"></i>✨ No products in this category. Be the first to upload!</div>'; 
+      return; 
+    }
+    
     container.innerHTML = filtered.map(p => `<div class="product-card" data-id="${p.id}"><div class="share-icon" data-product='${JSON.stringify(p).replace(/'/g, "&#39;")}'><i class="fas fa-share-alt"></i></div><div class="product-img-container"><img class="product-img" src="${p.image}" onerror="this.src='https://via.placeholder.com/300x300?text=Product'"></div><div class="product-info"><div class="product-title">${escapeHtml(p.name)}</div><div class="product-desc">${escapeHtml(p.description.substring(0, 80))}${p.description.length > 80 ? '...' : ''}</div><button class="buy-btn" data-link="${escapeAttr(p.affiliateLink)}">Buy Now →</button></div></div>`).join('');
+    
     document.querySelectorAll('.buy-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); window.open(btn.getAttribute('data-link'), '_blank'); }));
     document.querySelectorAll('.share-icon').forEach(icon => icon.addEventListener('click', (e) => { e.stopPropagation(); const prod = JSON.parse(icon.getAttribute('data-product').replace(/&#39;/g, "'")); showShareModal(prod); }));
     document.querySelectorAll('.product-card').forEach(card => card.addEventListener('click', (e) => { if (!e.target.classList.contains('buy-btn') && !e.target.closest('.share-icon')) { const id = parseInt(card.getAttribute('data-id')); const prod = products.find(p => p.id === id); if(prod) showProductDetail(prod); } }));
@@ -953,6 +875,7 @@
     document.getElementById('messageDetail')?.addEventListener('click', () => shareMessage(prod));
     document.getElementById('copyDetail')?.addEventListener('click', () => copyLink(prod));
   }
+  
   function showShareModal(prod) {
     const modal = document.getElementById('productDetailModal'), content = document.getElementById('productDetailContent');
     content.innerHTML = `<div style="text-align:center;"><span class="modal-close" id="closeShareModal">&times;</span><h2>Share this deal</h2><img src="${prod.image}" style="width:160px; border-radius:20px; margin:20px;"><h3>${escapeHtml(prod.name)}</h3><div class="share-options"><div class="share-option whatsapp-share" id="whatsappModal"><i class="fab fa-whatsapp"></i> WhatsApp</div><div class="share-option message-share" id="messageModal"><i class="fas fa-sms"></i> Message</div><div class="share-option copy-link-share" id="copyModal"><i class="fas fa-copy"></i> Copy Link</div></div></div>`;
@@ -962,18 +885,37 @@
     document.getElementById('messageModal')?.addEventListener('click', () => shareMessage(prod));
     document.getElementById('copyModal')?.addEventListener('click', () => copyLink(prod));
   }
-  function shareWhatsApp(p) { window.open(`https://wa.me/?text=${encodeURIComponent(`Check out ${p.name}: ${p.affiliateLink}`)}`, '_blank'); }
+  
+  function shareWhatsApp(p) { window.open(`https://wa.me/?text=${encodeURIComponent(`✨ Check out ${p.name}! ✨\n\n${p.description}\n\nBuy here: ${p.affiliateLink}`)}`, '_blank'); }
   function shareMessage(p) { window.open(`sms:?body=${encodeURIComponent(`Check out ${p.name}: ${p.affiliateLink}`)}`, '_blank'); }
-  function copyLink(p) { navigator.clipboard.writeText(p.affiliateLink); alert('Affiliate link copied!'); }
+  function copyLink(p) { navigator.clipboard.writeText(p.affiliateLink); alert('✅ Affiliate link copied to clipboard!'); }
 
   function openUploadModal() { if (!currentUser) { alert('Please login first!'); return; } document.getElementById('uploadModal').style.display = 'block'; }
+  
   let uploadedImageData = null;
   document.getElementById('productImage')?.addEventListener('change', (e) => { const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = (ev) => { uploadedImageData = ev.target.result; document.getElementById('imagePreviewUpload').innerHTML = `<img src="${uploadedImageData}" style="width:100px;">`; }; reader.readAsDataURL(file); } });
-  document.getElementById('uploadForm')?.addEventListener('submit', (e) => { e.preventDefault(); if(!uploadedImageData) { alert('Upload product image'); return; } const name = document.getElementById('productName').value, category = document.getElementById('productCategory').value, desc = document.getElementById('productDesc').value, link = document.getElementById('affiliateLink').value; if(name && desc && link) { const newProduct = { id: Date.now(), name, category, description: desc, image: uploadedImageData, affiliateLink: link }; products.unshift(newProduct); saveProducts(); if(currentFilter === 'all' || currentFilter === category) renderProducts(); alert('✅ Product published!'); document.getElementById('uploadForm').reset(); document.getElementById('imagePreviewUpload').innerHTML = ''; uploadedImageData = null; document.getElementById('uploadModal').style.display = 'none'; } else alert('Fill all fields'); });
+  
+  document.getElementById('uploadForm')?.addEventListener('submit', (e) => { 
+    e.preventDefault(); 
+    if(!uploadedImageData) { alert('📸 Please upload a product image'); return; } 
+    const name = document.getElementById('productName').value, category = document.getElementById('productCategory').value, desc = document.getElementById('productDesc').value, link = document.getElementById('affiliateLink').value; 
+    if(name && desc && link) { 
+      const newProduct = { id: Date.now(), name, category, description: desc, image: uploadedImageData, affiliateLink: link }; 
+      products.unshift(newProduct); 
+      saveProducts(); 
+      if(currentFilter === 'all' || currentFilter === category) renderProducts(); 
+      alert('✅ Product published successfully!'); 
+      document.getElementById('uploadForm').reset(); 
+      document.getElementById('imagePreviewUpload').innerHTML = ''; 
+      uploadedImageData = null; 
+      document.getElementById('uploadModal').style.display = 'none'; 
+    } else alert('Please fill all fields'); 
+  });
+  
   window.onclick = (e) => { if(e.target.classList.contains('modal')) e.target.style.display = 'none'; };
 
   // BOOT
-  loadProducts(); checkLoginStatus(); setupAuthEvents(); initGoogleSignIn();
+  loadProducts(); checkLoginStatus(); setupAuthEvents();
 </script>
 </body>
 </html>
