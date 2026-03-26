@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Affiliate Market – Community Affiliate Marketplace. Anyone can upload products and earn!">
+  <title>Affiliate Market | Shop & Earn with Affiliate Products</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Google Identity Services for Sign-In -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1454423689079498" crossorigin="anonymous"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      color: #111;
+    }
+
+    /* Login Screen - Full Page */
+    .login-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.5s ease;
+    }
+    .login-box {
+      background: white;
+      border-radius: 32px;
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      animation: fadeInUp 0.5s ease;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .login-box h1 {
+      font-size: 2.2rem;
+      background: linear-gradient(135deg, #1e2a3a, #f39c12);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+    }
+    .login-box p {
+      color: #5a6874;
+      margin-bottom: 30px;
+    }
+    .login-input {
+      width: 100%;
+      padding: 14px 18px;
+      margin: 10px 0;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+      background: #f8fafc;
+    }
+    .login-input:focus {
+      border-color: #f39c12;
+      box-shadow: 0 0 0 3px rgba(243,156,18,0.1);
+    }
+    .login-btn-primary {
+      width: 100%;
+      background: #f39c12;
+      color: #1e2a3a;
+      padding: 14px;
+      border: none;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 15px 0;
+      transition: 0.2s;
+    }
+    .login-btn-primary:hover {
+      background: #e67e22;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(243,156,18,0.3);
+    }
+    .google-btn-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 20px 0;
+      color: #94a3b8;
+    }
+    .divider::before, .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
+    .divider span {
+      padding: 0 15px;
+    }
+    .switch-auth {
+      margin-top: 20px;
+      color: #475569;
+    }
+    .switch-auth a {
+      color: #f39c12;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Main App */
+    .main-app {
+      display: none;
+    }
+
+    /* Header Styles - Sticky Working */
+    .header {
+      background: #ffffff;
+      backdrop-filter: blur(0px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+      border-bottom: 1px solid #edf2f7;
+    }
+    .nav-container {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1e2a3a, #f39c12);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      text-decoration: none;
+      cursor: pointer;
+      letter-spacing: -0.5px;
+    }
+    .logo span {
+      background: none;
+      color: #1e2a3a;
+      font-weight: 500;
+    }
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: #2d3e50;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .nav-links a:hover {
+      color: #f39c12;
+    }
+    .upload-btn {
+      background: #f39c12;
+      color: #1e2a3a !important;
+      padding: 8px 22px;
+      border-radius: 40px;
+      font-weight: 700 !important;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .upload-btn:hover {
+      background: #e67e22;
+      transform: scale(1.02);
+    }
+    .search-bar {
+      display: flex;
+      flex: 1;
+      max-width: 480px;
+    }
+    .search-bar input {
+      flex: 1;
+      padding: 12px 18px;
+      border: 1px solid #e2e8f0;
+      border-radius: 60px 0 0 60px;
+      font-size: 0.95rem;
+      outline: none;
+      background: #f8fafc;
+    }
+    .search-bar input:focus {
+      border-color: #f39c12;
+    }
+    .search-bar button {
+      background: #f39c12;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 0 60px 60px 0;
+      cursor: pointer;
+      color: #1e2a3a;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f1f5f9;
+      padding: 5px 15px 5px 10px;
+      border-radius: 60px;
+      cursor: pointer;
+    }
+    .user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #f39c12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #1e2a3a;
+    }
+    .logout-btn {
+      background: rgba(0,0,0,0.05);
+      border: none;
+      padding: 6px 14px;
+      border-radius: 40px;
+      color: #2d3e50;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .logout-btn:hover {
+      background: #e2e8f0;
+    }
+
+    /* Hero Section - Will Hide on Scroll */
+    .hero-section {
+      background: linear-gradient(105deg, #ffffff 0%, #fef9e6 100%);
+      padding: 70px 20px;
+      text-align: center;
+      color: #1e2a3a;
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      position: relative;
+      z-index: 1;
+      border-bottom: 1px solid #ffefcf;
+    }
+    .hero-section h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1e2a3a, #f39c12);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .hero-section p {
+      font-size: 1.2rem;
+      opacity: 0.8;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .hero-section.hidden {
+      opacity: 0;
+      transform: translateY(-100%);
+      padding: 0;
+      height: 0;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Ad Container */
+    .ad-container {
+      background: #fff;
+      border-radius: 24px;
+      margin: 24px 0;
+      text-align: center;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      border: 1px solid #edf2f7;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ad-label {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+
+    /* Categories */
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 40px 0 24px;
+      color: #0f172a;
+      border-left: 6px solid #f39c12;
+      padding-left: 20px;
+    }
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    .category-card {
+      background: white;
+      border-radius: 28px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+      border: 1px solid #f1f5f9;
+      text-align: center;
+    }
+    .category-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.1);
+      border-color: #ffe0a3;
+    }
+    .category-card.active {
+      border: 2px solid #f39c12;
+      background: #fffbf0;
+    }
+    .category-img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    .category-card h3 {
+      padding: 16px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* Product Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 28px;
+      margin: 20px 0 50px;
+    }
+    .product-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+      cursor: pointer;
+      position: relative;
+      border: 1px solid #f0f2f5;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 24px 36px -12px rgba(0,0,0,0.2);
+    }
+    .share-icon {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(4px);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: 0.2s;
+    }
+    .share-icon:hover {
+      background: #f39c12;
+      transform: scale(1.08);
+      color: #1e2a3a;
+    }
+    .product-img-container {
+      position: relative;
+      padding: 20px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 260px;
+      overflow: hidden;
+    }
+    .product-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .product-card:hover .product-img {
+      transform: scale(1.05);
+    }
+    .product-info {
+      padding: 18px;
+      border-top: 1px solid #f1f5f9;
+      background: #ffffff;
+    }
+    .product-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #0f172a;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      height: 52px;
+    }
+    .product-desc {
+      font-size: 0.85rem;
+      color: #475569;
+      margin: 12px 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .buy-btn {
+      width: 100%;
+      background: #f39c12;
+      color: #1e2a3a;
+      border: none;
+      padding: 12px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 8px;
+    }
+    .buy-btn:hover {
+      background: #e67e22;
+      transform: scale(0.98);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      z-index: 2000;
+      overflow-y: auto;
+    }
+    .modal-content {
+      max-width: 550px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 32px;
+      padding: 32px;
+      animation: slideIn 0.3s ease;
+    }
+    .product-detail-modal {
+      max-width: 1000px;
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .modal-close {
+      float: right;
+      font-size: 28px;
+      cursor: pointer;
+      color: #94a3b8;
+      transition: 0.2s;
+    }
+    .modal-close:hover {
+      color: #f39c12;
+    }
+    .share-options {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin: 25px 0 15px;
+      flex-wrap: wrap;
+    }
+    .share-option {
+      padding: 12px 24px;
+      border-radius: 60px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.2s;
+      font-weight: 600;
+    }
+    .share-option:hover {
+      transform: translateY(-3px);
+    }
+    .whatsapp-share {
+      background: #25D366;
+      color: white;
+    }
+    .message-share {
+      background: #34B7F1;
+      color: white;
+    }
+    .copy-link-share {
+      background: #334155;
+      color: white;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      font-size: 1rem;
+      background: #fefefe;
+    }
+    .image-preview {
+      margin-top: 12px;
+    }
+    .image-preview img {
+      max-width: 100px;
+      border-radius: 16px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+    .footer {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 48px 0 24px;
+      margin-top: 60px;
+    }
+    .footer-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 30px;
+    }
+    .footer-col a {
+      display: block;
+      color: #cbd5e1;
+      text-decoration: none;
+      margin: 10px 0;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .footer-col a:hover {
+      color: #f39c12;
+    }
+    .copyright {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #1e293b;
+    }
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+      }
+      .search-bar {
+        max-width: 100%;
+        width: 100%;
+      }
+      .hero-section h1 {
+        font-size: 2rem;
+      }
+      .product-detail-modal {
+        margin: 20px;
+        padding: 20px;
+      }
+      .share-options {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-box">
+    <h1>Affiliate Market</h1>
+    <p>Join the community — share products & earn commissions</p>
+    
+    <div id="loginFormContainer">
+      <input type="email" id="loginEmail" class="login-input" placeholder="Email address">
+      <input type="password" id="loginPassword" class="login-input" placeholder="Password">
+      <button id="emailLoginBtn" class="login-btn-primary">Sign In</button>
+    </div>
+    
+    <div id="signupFormContainer" style="display: none;">
+      <input type="text" id="signupName" class="login-input" placeholder="Full Name">
+      <input type="email" id="signupEmail" class="login-input" placeholder="Email address">
+      <input type="password" id="signupPassword" class="login-input" placeholder="Password">
+      <button id="emailSignupBtn" class="login-btn-primary">Create Account</button>
+    </div>
+    
+    <div class="divider">
+      <span>or</span>
+    </div>
+    
+    <div class="google-btn-wrapper">
+      <div id="googleSignInButton"></div>
+    </div>
+    
+    <div class="switch-auth">
+      <span id="authSwitchText">New user? </span>
+      <a id="authSwitchBtn">Create Account</a>
+    </div>
+  </div>
+</div>
+
+<!-- Main App -->
+<div id="mainApp" class="main-app">
+  <header class="header">
+    <div class="nav-container">
+      <div class="logo">AFFILIATE<span>MARKET</span></div>
+      <div class="nav-links">
+        <a id="homeLink">Home</a>
+        <a id="categoriesLink">Categories</a>
+        <a id="uploadNavBtn" class="upload-btn">📤 Upload Product</a>
+      </div>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for products...">
+        <button id="searchBtn"><i class="fas fa-search"></i> Go</button>
+      </div>
+      <div class="user-info">
+        <div class="user-avatar" id="userAvatar"></div>
+        <span id="userName"></span>
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section - Will Hide on Scroll -->
+  <div id="heroSection" class="hero-section">
+    <div class="container">
+      <h1>Welcome to Affiliate Market</h1>
+      <p>Discover hand-picked products, upload your affiliate links, and start earning today.</p>
+    </div>
+  </div>
+
+  <main class="container">
+    <!-- Google Ad -->
+    <div class="ad-container">
+      <div class="ad-label">Sponsored</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-1454423689079498"
+           data-ad-slot="8459003812"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+
+    <div id="categoriesSection">
+      <h2 class="section-title">Shop by Category</h2>
+      <div class="categories-grid" id="categoriesGrid"></div>
+    </div>
+
+    <h2 class="section-title" id="productsTitle">🔥 Trending Products</h2>
+    <div id="productsGrid" class="products-grid"></div>
+
+    <!-- Second Google Ad -->
+    <div class="ad-container">
+      <div class="ad-label">Advertisement</div>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-1454423689079498"
+           data-ad-slot="8459003812"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h3>Affiliate Market</h3>
+          <p style="margin-top: 10px;">Your trusted affiliate ecosystem</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <a id="footerHome">Home</a>
+          <a id="footerUpload">Upload Product</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+        </div>
+      </div>
+      <div class="copyright">© 2025 Affiliate Market - Empower your earnings</div>
+    </div>
+  </footer>
+</div>
+
+<!-- Upload Modal -->
+<div id="uploadModal" class="modal">
+  <div class="modal-content">
+    <span class="modal-close" id="closeUploadModal">&times;</span>
+    <h2 class="modal-title">📤 Upload Your Product</h2>
+    <form id="uploadForm">
+      <div class="form-group">
+        <label>Product Image *</label>
+        <input type="file" id="productImage" accept="image/*" required>
+        <div id="imagePreviewUpload" class="image-preview"></div>
+      </div>
+      <div class="form-group">
+        <label>Product Name *</label>
+        <input type="text" id="productName" required placeholder="e.g., Noise Cancelling Headphones">
+      </div>
+      <div class="form-group">
+        <label>Category *</label>
+        <select id="productCategory">
+          <option value="electronics">📱 Electronics</option>
+          <option value="fashion">👗 Fashion</option>
+          <option value="home">🏠 Home & Living</option>
+          <option value="beauty">💄 Beauty</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Description *</label>
+        <textarea id="productDesc" rows="3" required placeholder="Describe your product..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Affiliate Link *</label>
+        <input type="url" id="affiliateLink" required placeholder="https://example.com/affiliate-product">
+      </div>
+      <button type="submit" class="login-btn-primary">✨ Publish Product</button>
+    </form>
+  </div>
+</div>
+
+<!-- Product Detail Modal -->
+<div id="productDetailModal" class="modal">
+  <div class="modal-content product-detail-modal">
+    <span class="modal-close" id="closeDetailModal">&times;</span>
+    <div id="productDetailContent"></div>
+  </div>
+</div>
+
+<script>
+  // ------------------ DATA & STATE ------------------
+  let products = [];
+  let currentUser = null;
+  let currentFilter = "all";
+  let searchQuery = "";
+  let isLoginMode = true;
+  let heroSection = null;
+
+  // Helper Functions
+  function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
+  function escapeAttr(str) { if (!str) return ''; return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function saveProducts() { localStorage.setItem('affiliateMarketProducts', JSON.stringify(products)); }
+  
+  function loadProducts() {
+    const saved = localStorage.getItem('affiliateMarketProducts');
+    if (saved) { products = JSON.parse(saved); } 
+    else {
+      products = [
+        { id: 1, name: "Sony WH-1000XM5", category: "electronics", description: "Industry-leading noise cancellation, 30hr battery, premium sound.", image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400", affiliateLink: "https://amzn.to/demo1" },
+        { id: 2, name: "Premium Cotton Tee", category: "fashion", description: "Breathable organic cotton, modern fit.", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", affiliateLink: "https://amzn.to/demo2" },
+        { id: 3, name: "Galaxy Watch Ultra", category: "electronics", description: "Advanced health metrics, GPS, 5-day battery.", image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400", affiliateLink: "https://amzn.to/demo3" },
+        { id: 4, name: "Floral Summer Dress", category: "fashion", description: "Flowy chiffon, perfect for beach days.", image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400", affiliateLink: "https://amzn.to/demo4" },
+        { id: 5, name: "Ergonomic Mesh Chair", category: "home", description: "Adjustable lumbar, breathable mesh, modern design.", image: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400", affiliateLink: "https://amzn.to/demo5" }
+      ];
+      saveProducts();
+    }
+  }
+
+  // Scroll Hero Effect
+  function initScrollHero() {
+    heroSection = document.getElementById('heroSection');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 80) heroSection?.classList.add('hidden');
+      else heroSection?.classList.remove('hidden');
+    });
+  }
+
+  // Google Sign-In
+  function initGoogleSignIn() {
+    if (typeof google !== 'undefined') {
+      google.accounts.id.initialize({
+        client_id: '1080626617131-5hv0r9s91n3frgp5gp9nffna0rs8h2d3.apps.googleusercontent.com',
+        callback: (resp) => {
+          const data = JSON.parse(atob(resp.credential.split('.')[1]));
+          currentUser = { email: data.email, name: data.name, picture: data.picture };
+          localStorage.setItem('affiliateMarketUser', JSON.stringify(currentUser));
+          showMainApp();
+        }
+      });
+      google.accounts.id.renderButton(document.getElementById('googleSignInButton'), { theme: 'outline', size: 'large', width: '100%' });
+    }
+  }
+
+  function checkLoginStatus() {
+    const savedUser = localStorage.getItem('affiliateMarketUser');
+    if (savedUser) { currentUser = JSON.parse(savedUser); showMainApp(); } 
+    else showLoginScreen();
+  }
+  function showLoginScreen() { document.getElementById('loginScreen').style.display = 'flex'; document.getElementById('mainApp').style.display = 'none'; }
+  function showMainApp() {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    document.getElementById('userName').innerText = currentUser.name;
+    document.getElementById('userAvatar').innerText = currentUser.name.charAt(0).toUpperCase();
+    renderCategories(); renderProducts(); setupMainEvents();
+    setTimeout(() => initScrollHero(), 100);
+    setTimeout(() => { if (typeof adsbygoogle !== 'undefined') try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){} }, 800);
+  }
+
+  function setupAuthEvents() {
+    const switchBtn = document.getElementById('authSwitchBtn');
+    switchBtn.onclick = () => {
+      isLoginMode = !isLoginMode;
+      document.getElementById('loginFormContainer').style.display = isLoginMode ? 'block' : 'none';
+      document.getElementById('signupFormContainer').style.display = isLoginMode ? 'none' : 'block';
+      document.getElementById('authSwitchText').innerText = isLoginMode ? 'New user? ' : 'Already have an account? ';
+      switchBtn.innerText = isLoginMode ? 'Create Account' : 'Sign In';
+    };
+    document.getElementById('emailLoginBtn').onclick = () => {
+      const email = document.getElementById('loginEmail').value;
+      const pwd = document.getElementById('loginPassword').value;
+      if (email && pwd) { currentUser = { email, name: email.split('@')[0] }; localStorage.setItem('affiliateMarketUser', JSON.stringify(currentUser)); showMainApp(); }
+      else alert('Enter email & password');
+    };
+    document.getElementById('emailSignupBtn').onclick = () => {
+      const name = document.getElementById('signupName').value, email = document.getElementById('signupEmail').value, pwd = document.getElementById('signupPassword').value;
+      if (name && email && pwd) { currentUser = { email, name }; localStorage.setItem('affiliateMarketUser', JSON.stringify(currentUser)); showMainApp(); }
+      else alert('Fill all fields');
+    };
+  }
+
+  function setupMainEvents() {
+    document.getElementById('logoutBtn').onclick = () => { localStorage.removeItem('affiliateMarketUser'); currentUser = null; showLoginScreen(); };
+    document.getElementById('homeLink').onclick = () => resetHome();
+    document.getElementById('footerHome').onclick = () => resetHome();
+    document.getElementById('categoriesLink').onclick = () => document.getElementById('categoriesSection').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('searchBtn').onclick = () => { searchQuery = document.getElementById('searchInput').value.toLowerCase(); renderProducts(); };
+    document.getElementById('searchInput').onkeypress = (e) => { if (e.key === 'Enter') { searchQuery = e.target.value.toLowerCase(); renderProducts(); } };
+    document.getElementById('uploadNavBtn').onclick = () => openUploadModal();
+    document.getElementById('footerUpload').onclick = () => openUploadModal();
+    document.getElementById('closeUploadModal').onclick = () => document.getElementById('uploadModal').style.display = 'none';
+    document.getElementById('closeDetailModal').onclick = () => document.getElementById('productDetailModal').style.display = 'none';
+  }
+  function resetHome() { currentFilter = 'all'; searchQuery = ''; document.getElementById('searchInput').value = ''; document.getElementById('productsTitle').innerHTML = '🔥 Trending Products'; document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active')); renderProducts(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+  function renderCategories() {
+    const cats = [
+      { name: "All Products", cat: "all", image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=400", icon: "🎁" },
+      { name: "Electronics", cat: "electronics", image: "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400", icon: "📱" },
+      { name: "Fashion", cat: "fashion", image: "https://images.unsplash.com/photo-1445205170230-053b83016050?w=400", icon: "👗" },
+      { name: "Home & Living", cat: "home", image: "https://images.unsplash.com/photo-1484154218962-a197022b5858?w=400", icon: "🏠" },
+      { name: "Beauty", cat: "beauty", image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400", icon: "💄" }
+    ];
+    const container = document.getElementById('categoriesGrid');
+    container.innerHTML = cats.map(c => `<div class="category-card" data-cat="${c.cat}"><img class="category-img" src="${c.image}"><h3>${c.icon} ${c.name}</h3></div>`).join('');
+    document.querySelectorAll('.category-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const cat = card.getAttribute('data-cat');
+        document.querySelectorAll('.category-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        currentFilter = cat;
+        const title = card.querySelector('h3').innerText;
+        document.getElementById('productsTitle').innerHTML = currentFilter === 'all' ? '🔥 All Products' : `🔥 ${title}`;
+        searchQuery = ''; document.getElementById('searchInput').value = '';
+        renderProducts();
+        document.getElementById('productsTitle').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  }
+
+  function renderProducts() {
+    let filtered = products.filter(p => (currentFilter === 'all' || p.category === currentFilter) && (searchQuery ? p.name.toLowerCase().includes(searchQuery) || p.description.toLowerCase().includes(searchQuery) : true));
+    const container = document.getElementById('productsGrid');
+    if (!filtered.length) { container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:60px;">✨ No products found. Be the first to upload!</div>'; return; }
+    container.innerHTML = filtered.map(p => `<div class="product-card" data-id="${p.id}"><div class="share-icon" data-product='${JSON.stringify(p).replace(/'/g, "&#39;")}'><i class="fas fa-share-alt"></i></div><div class="product-img-container"><img class="product-img" src="${p.image}" onerror="this.src='https://via.placeholder.com/300x300?text=Product'"></div><div class="product-info"><div class="product-title">${escapeHtml(p.name)}</div><div class="product-desc">${escapeHtml(p.description.substring(0, 80))}${p.description.length > 80 ? '...' : ''}</div><button class="buy-btn" data-link="${escapeAttr(p.affiliateLink)}">Buy Now →</button></div></div>`).join('');
+    document.querySelectorAll('.buy-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); window.open(btn.getAttribute('data-link'), '_blank'); }));
+    document.querySelectorAll('.share-icon').forEach(icon => icon.addEventListener('click', (e) => { e.stopPropagation(); const prod = JSON.parse(icon.getAttribute('data-product').replace(/&#39;/g, "'")); showShareModal(prod); }));
+    document.querySelectorAll('.product-card').forEach(card => card.addEventListener('click', (e) => { if (!e.target.classList.contains('buy-btn') && !e.target.closest('.share-icon')) { const id = parseInt(card.getAttribute('data-id')); const prod = products.find(p => p.id === id); if(prod) showProductDetail(prod); } }));
+  }
+
+  function showProductDetail(prod) {
+    const modal = document.getElementById('productDetailModal'), content = document.getElementById('productDetailContent');
+    content.innerHTML = `<div style="display:grid; grid-template-columns:1fr 1fr; gap:30px;"><div><img src="${prod.image}" style="width:100%; border-radius:24px;"></div><div><h2 style="font-size:1.8rem;">${escapeHtml(prod.name)}</h2><p style="margin:20px 0;">${escapeHtml(prod.description)}</p><button class="buy-btn" id="detailBuyBtn" data-link="${escapeAttr(prod.affiliateLink)}">Purchase Now →</button><div class="share-options" style="margin-top:30px;"><div class="share-option whatsapp-share" id="whatsappDetail"><i class="fab fa-whatsapp"></i> WhatsApp</div><div class="share-option message-share" id="messageDetail"><i class="fas fa-sms"></i> Message</div><div class="share-option copy-link-share" id="copyDetail"><i class="fas fa-copy"></i> Copy Link</div></div></div></div>`;
+    modal.style.display = 'block';
+    document.getElementById('detailBuyBtn')?.addEventListener('click', () => window.open(prod.affiliateLink, '_blank'));
+    document.getElementById('whatsappDetail')?.addEventListener('click', () => shareWhatsApp(prod));
+    document.getElementById('messageDetail')?.addEventListener('click', () => shareMessage(prod));
+    document.getElementById('copyDetail')?.addEventListener('click', () => copyLink(prod));
+  }
+  function showShareModal(prod) {
+    const modal = document.getElementById('productDetailModal'), content = document.getElementById('productDetailContent');
+    content.innerHTML = `<div style="text-align:center;"><span class="modal-close" id="closeShareModal">&times;</span><h2>Share this deal</h2><img src="${prod.image}" style="width:160px; border-radius:20px; margin:20px;"><h3>${escapeHtml(prod.name)}</h3><div class="share-options"><div class="share-option whatsapp-share" id="whatsappModal"><i class="fab fa-whatsapp"></i> WhatsApp</div><div class="share-option message-share" id="messageModal"><i class="fas fa-sms"></i> Message</div><div class="share-option copy-link-share" id="copyModal"><i class="fas fa-copy"></i> Copy Link</div></div></div>`;
+    modal.style.display = 'block';
+    document.getElementById('closeShareModal')?.addEventListener('click', () => modal.style.display = 'none');
+    document.getElementById('whatsappModal')?.addEventListener('click', () => shareWhatsApp(prod));
+    document.getElementById('messageModal')?.addEventListener('click', () => shareMessage(prod));
+    document.getElementById('copyModal')?.addEventListener('click', () => copyLink(prod));
+  }
+  function shareWhatsApp(p) { window.open(`https://wa.me/?text=${encodeURIComponent(`Check out ${p.name}: ${p.affiliateLink}`)}`, '_blank'); }
+  function shareMessage(p) { window.open(`sms:?body=${encodeURIComponent(`Check out ${p.name}: ${p.affiliateLink}`)}`, '_blank'); }
+  function copyLink(p) { navigator.clipboard.writeText(p.affiliateLink); alert('Affiliate link copied!'); }
+
+  function openUploadModal() { if (!currentUser) { alert('Please login first!'); return; } document.getElementById('uploadModal').style.display = 'block'; }
+  let uploadedImageData = null;
+  document.getElementById('productImage')?.addEventListener('change', (e) => { const file = e.target.files[0]; if(file) { const reader = new FileReader(); reader.onload = (ev) => { uploadedImageData = ev.target.result; document.getElementById('imagePreviewUpload').innerHTML = `<img src="${uploadedImageData}" style="width:100px;">`; }; reader.readAsDataURL(file); } });
+  document.getElementById('uploadForm')?.addEventListener('submit', (e) => { e.preventDefault(); if(!uploadedImageData) { alert('Upload product image'); return; } const name = document.getElementById('productName').value, category = document.getElementById('productCategory').value, desc = document.getElementById('productDesc').value, link = document.getElementById('affiliateLink').value; if(name && desc && link) { const newProduct = { id: Date.now(), name, category, description: desc, image: uploadedImageData, affiliateLink: link }; products.unshift(newProduct); saveProducts(); if(currentFilter === 'all' || currentFilter === category) renderProducts(); alert('✅ Product published!'); document.getElementById('uploadForm').reset(); document.getElementById('imagePreviewUpload').innerHTML = ''; uploadedImageData = null; document.getElementById('uploadModal').style.display = 'none'; } else alert('Fill all fields'); });
+  window.onclick = (e) => { if(e.target.classList.contains('modal')) e.target.style.display = 'none'; };
+
+  // BOOT
+  loadProducts(); checkLoginStatus(); setupAuthEvents(); initGoogleSignIn();
+</script>
+</body>
+</html>
