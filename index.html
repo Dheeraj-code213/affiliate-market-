@@ -10,8 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1454423689079498" crossorigin="anonymous"></script>
+  <!-- Removed Google AdSense scripts as requested -->
   
   <style>
     * {
@@ -262,23 +261,34 @@
       padding: 0 24px;
     }
 
-    .ad-container {
-      background: #fff;
-      border-radius: 24px;
+    /* Native Banner Ad Container - between products */
+    .ad-between-products {
       margin: 24px 0;
-      text-align: center;
-      padding: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 16px 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.02);
       border: 1px solid #edf2f7;
-      min-height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      transition: all 0.2s;
+      text-align: center;
     }
-    .ad-label {
+    .ad-label-small {
       font-size: 0.7rem;
       color: #94a3b8;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    /* Ensure native banner container responsive */
+    #container-f14a9c80f69dfbd8d83c876dd73e76dd {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 90px;
+    }
+    #container-f14a9c80f69dfbd8d83c876dd73e76dd img {
+      max-width: 100%;
+      border-radius: 16px;
     }
 
     .section-title {
@@ -630,16 +640,8 @@
   </div>
 
   <main class="container">
-    <div class="ad-container">
-      <div class="ad-label">Sponsored</div>
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-1454423689079498"
-           data-ad-slot="8459003812"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-    </div>
-
+    <!-- Removed Google AdSense top banner -->
+    
     <div id="categoriesSection">
       <h2 class="section-title">Shop by Category</h2>
       <div class="categories-grid" id="categoriesGrid"></div>
@@ -648,15 +650,7 @@
     <h2 class="section-title" id="productsTitle">🔥 Trending Products</h2>
     <div id="productsGrid" class="products-grid"></div>
 
-    <div class="ad-container">
-      <div class="ad-label">Advertisement</div>
-      <ins class="adsbygoogle"
-           style="display:block"
-           data-ad-client="ca-pub-1454423689079498"
-           data-ad-slot="8459003812"
-           data-ad-format="auto"
-           data-full-width-responsive="true"></ins>
-    </div>
+    <!-- Removed second Google AdSense -->
   </main>
 
   <footer class="footer">
@@ -727,12 +721,17 @@
   </div>
 </div>
 
+<!-- Native Banner Ad Script (Adsteera) + Social Bar Script after 2 min -->
+<!-- Native banner script: asynchronous and placed in DOM, container will be dynamically inserted between every 3 products -->
+<script async="async" data-cfasync="false" src="https://pl28969778.profitablecpmratenetwork.com/f14a9c80f69dfbd8d83c876dd73e76dd/invoke.js"></script>
+
 <script>
   // ------------------ DATA & STATE ------------------
   let products = [];
   let currentUser = null;
   let currentFilter = "all";
   let heroSection = null;
+  let nativeAdContainerHTML = null; // store ad div for dynamic insertion
 
   function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;'); }
   function escapeAttr(str) { if (!str) return ''; return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -747,9 +746,71 @@
         { id: 2, name: "Premium Cotton T-Shirt", category: "fashion", description: "Breathable organic cotton, modern fit, available in multiple colors.", image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400", affiliateLink: "https://amzn.to/demo2" },
         { id: 3, name: "Galaxy Watch Ultra Smartwatch", category: "electronics", description: "Advanced health metrics, GPS, 5-day battery, AMOLED display.", image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400", affiliateLink: "https://amzn.to/demo3" },
         { id: 4, name: "Floral Summer Maxi Dress", category: "fashion", description: "Flowy chiffon fabric, floral print, perfect for beach days.", image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400", affiliateLink: "https://amzn.to/demo4" },
-        { id: 5, name: "Ergonomic Mesh Office Chair", category: "home", description: "Adjustable lumbar support, breathable mesh back, modern design.", image: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400", affiliateLink: "https://amzn.to/demo5" }
+        { id: 5, name: "Ergonomic Mesh Office Chair", category: "home", description: "Adjustable lumbar support, breathable mesh back, modern design.", image: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=400", affiliateLink: "https://amzn.to/demo5" },
+        { id: 6, name: "Organic Skincare Set", category: "beauty", description: "Natural ingredients, glowing skin routine", image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400", affiliateLink: "https://amzn.to/demo6" }
       ];
       saveProducts();
+    }
+  }
+
+  // Function to insert native banner between every 3 products in the products grid.
+  function injectNativeAdBetweenProducts() {
+    // Ensure container div exists
+    if (!document.getElementById('productsGrid')) return;
+    const productsGrid = document.getElementById('productsGrid');
+    // Remove any existing dynamic ad wrappers before re-insert (avoid duplicates)
+    const existingAds = productsGrid.querySelectorAll('.ad-between-products');
+    existingAds.forEach(ad => ad.remove());
+    
+    const productCards = productsGrid.querySelectorAll('.product-card');
+    if (productCards.length === 0) return;
+    
+    const adBlock = document.createElement('div');
+    adBlock.className = 'ad-between-products';
+    adBlock.innerHTML = `<div class="ad-label-small">Sponsored • Native Ad</div><div id="container-f14a9c80f69dfbd8d83c876dd73e76dd"></div>`;
+    
+    // We need to inject after every 3 products (positions 2,5,8,... zero-indexed)
+    let insertPositions = [];
+    for (let i = 2; i < productCards.length; i += 3) {
+      insertPositions.push(i);
+    }
+    // Insert in reverse order to not shift indices
+    for (let i = insertPositions.length - 1; i >= 0; i--) {
+      const pos = insertPositions[i];
+      if (productCards[pos] && productCards[pos].parentNode === productsGrid) {
+        const newAd = adBlock.cloneNode(true);
+        productsGrid.insertBefore(newAd, productCards[pos + 1] ? productCards[pos + 1] : null);
+      }
+    }
+    // If no ad inserted but we have at least 3 products, ensure ad container exists after 3rd item
+    if (insertPositions.length === 0 && productCards.length >= 3) {
+      const fallbackAd = adBlock.cloneNode(true);
+      if (productCards[2]) {
+        productsGrid.insertBefore(fallbackAd, productCards[3] ? productCards[3] : null);
+      } else if (productCards.length >= 3) {
+        productsGrid.appendChild(fallbackAd);
+      }
+    }
+    // Re-invoke native banner script to load inside newly created container(s)
+    if (typeof window.loadNativeAd === 'function') {
+      window.loadNativeAd();
+    } else {
+      // Native script may already have loaded but we need to trigger insertion for dynamic containers.
+      // The invoke.js automatically scans for #container-* IDs on load, but for dynamically added ones we must retrigger.
+      // We'll manually call the ad function if available, else we wait and let it load later.
+      setTimeout(() => {
+        if (window.adsbygoogle && window.adsbygoogle.loaded) {
+          // fallback: re-run ad loader
+        }
+        // For Adsteera, they sometimes auto-detect. Force a small delay to ensure container exists.
+        const scriptCheck = document.querySelector('script[src*="invoke.js"]');
+        if (scriptCheck && !window._adsteeraManualTrigger) {
+          window._adsteeraManualTrigger = true;
+          // create a small reinit for new containers
+          const evt = new Event('resize');
+          window.dispatchEvent(evt);
+        }
+      }, 50);
     }
   }
 
@@ -778,7 +839,6 @@
     renderProducts(); 
     setupMainEvents();
     setTimeout(() => initScrollHero(), 100);
-    setTimeout(() => { if (typeof adsbygoogle !== 'undefined') try { (adsbygoogle = window.adsbygoogle || []).push({}); } catch(e){} }, 800);
   }
 
   function setupAuthEvents() {
@@ -864,6 +924,9 @@
     document.querySelectorAll('.buy-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); window.open(btn.getAttribute('data-link'), '_blank'); }));
     document.querySelectorAll('.share-icon').forEach(icon => icon.addEventListener('click', (e) => { e.stopPropagation(); const prod = JSON.parse(icon.getAttribute('data-product').replace(/&#39;/g, "'")); showShareModal(prod); }));
     document.querySelectorAll('.product-card').forEach(card => card.addEventListener('click', (e) => { if (!e.target.classList.contains('buy-btn') && !e.target.closest('.share-icon')) { const id = parseInt(card.getAttribute('data-id')); const prod = products.find(p => p.id === id); if(prod) showProductDetail(prod); } }));
+    
+    // Inject native banner between every 3 products after grid render
+    setTimeout(() => { injectNativeAdBetweenProducts(); }, 10);
   }
 
   function showProductDetail(prod) {
@@ -913,6 +976,13 @@
   });
   
   window.onclick = (e) => { if(e.target.classList.contains('modal')) e.target.style.display = 'none'; };
+
+  // Social Bar Ad after 2 minutes delay (Adsteera Social Bar)
+  setTimeout(function() {
+    var s = document.createElement('script');
+    s.src = "https://pl28969769.profitablecpmratenetwork.com/a0/12/7e/a0127ef1457965b40976405506319fdb.js";
+    document.body.appendChild(s);
+  }, 120000); // 2 minutes delay
 
   // BOOT
   loadProducts(); checkLoginStatus(); setupAuthEvents();
